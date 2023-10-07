@@ -31,6 +31,7 @@ $$Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$
 实现一些经典的vit attention ，也算是笔记。😁😁😁
 
 # Vision transformer
+paper:[An image is worth 16x16 words: Transformers for image recognition at scale](https://arxiv.org/abs/2010.11929)
 
 ![Untitled 1](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/93183f78-7a1c-46e9-a4d9-05577ad3fe22)
 
