@@ -1,4 +1,5 @@
 # transformer研习
+## 所有attention放vit_attention文件夹下，及插及用。
 
 # Q,K,V
 
@@ -45,7 +46,7 @@ paper:[An image is worth 16x16 words: Transformers for image recognition at scal
 (4) MLP：将维度放大再缩小回去，197x768放大为197x3072，再缩小变为**197x768**
 
 ## vision transformer的attention实现
-
+[vsion transformer attention](https://github.com/Jacky-Android/Study-Vision-transformer/blob/main/vit_attention/Vit.py)
 ```python
 class Attention(nn.Module):
     def __init__(self,
