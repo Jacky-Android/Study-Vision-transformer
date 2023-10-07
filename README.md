@@ -1,5 +1,8 @@
 # transformer研习
+
 ## 所有attention放vit_attention文件夹下，及插及用。
+### 已经实现
+[vsion transformer attention](https://github.com/Jacky-Android/Study-Vision-transformer/blob/main/vit_attention/Vit.py)
 
 # Q,K,V
 
