@@ -76,11 +76,14 @@ class vit_attention(nn.Module):
     def forward(self,x):
         x = x.flatten(2).transpose(1, 2)
         x = x+self.mlp(self.att(self.norm(x)))
-        x = x.permute(0, 2, 1).reshape(x.shape[0],x.shape[1],int(x.shape[2]**0.5),int(x.shape[2]**0.5))
+        
+        x = x.permute(0, 2, 1)
+        
+        x = x.reshape(x.shape[0],x.shape[1],int(x.shape[2]**0.5),int(x.shape[2]**0.5))
 
         return x
 
 
 x = torch.randn([1,64,32,32])
-x = vit_attention(dim=x.shape[-1])(x)
+x = vit_attention(dim=x.shape[1])(x)
 print(x.shape)
