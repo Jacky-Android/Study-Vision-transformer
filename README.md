@@ -10,7 +10,8 @@ Transformer里面的Q，K，V是指查询（Query），键（Key）和值（Valu
 
 自注意力是指Q，K，V都来自于同一个输入，用于计算输入的每个元素与自身的相关性，从而捕捉输入的内部结构。编码器-解码器注意力是指Q来自于解码器的输出，K，V来自于编码器的输出，用于计算解码器的输出与编码器的输出的相关性，从而捕捉输入和输出之间的对应关系。
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled.png)
+![Untitled](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/ed7507ab-98b1-447b-9055-9a90ae2fdd86)
+
 
 ## QKV Attention
 
@@ -21,10 +22,7 @@ Transformer里面的Q，K，V是指查询（Query），键（Key）和值（Valu
 
 QKV attention 计算公式可以用数学公式表示为：
 
-$$
-Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V
-
-$$
+$$Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$
 
 其中，dk是K的维度，QKT表示Q和K的转置的点积，softmax函数将注意力的对数值归一化，使得它们的和为1。
 
@@ -34,7 +32,8 @@ $$
 
 # Vision transformer
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%201.png)
+![Untitled 1](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/93183f78-7a1c-46e9-a4d9-05577ad3fe22)
+
 
 1) patch embedding：例如输入图片大小为224x224，将图片分为固定大小的patch，patch大小为16x16，则每张图像会生成224x224/16x16=196个patch，即输入序列长度为**196**，每个patch维度16x16x3=**768**，线性投射层的维度为768xN (N=768)，因此输入通过线性投射层之后的维度依然为196x768，即一共有196个token，每个token的维度是768。这里还需要加上一个特殊字符cls，因此最终的维度是**197x768**。到目前为止，已经通过patch embedding将一个视觉问题转化为了一个seq2seq问题
 
