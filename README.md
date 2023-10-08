@@ -93,5 +93,39 @@ class Attention(nn.Module):
         x = self.proj_drop(x)
         return x
 ```
+# Swin Tranformer
+
+## 框架
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f3e18bd5-e2f1-4629-b637-ae7fa3ad4ab2/43e90388-9d71-4270-bca1-b90b4dc217d9/Untitled.png)
+
+- Swin Transformer（上图为 Swin-T，T 为 Tiny）首先通过补丁分割模块（如[ViT）](https://sh-tsang.medium.com/review-vision-transformer-vit-406568603de0)将输入 RGB 图像分割为不重叠的补丁。
+- 每个补丁都被视为一个“令牌”，其特征被设置为原始像素 RGB 值的串联。使用**4×4 的 patch 大小，因此每个 patch 的特征维度为 4×4×3=48**。线性嵌入层应用于该原始值特征，将**其投影到任意维度*C***。
+- 为了产生**分层表示**，随着网络变得更深，通过补丁合并层来减少标记的数量。第一个补丁合并层**连接每组 2×2 相邻补丁的特征，并在4 *C*维连接特征**上应用线性层。这**将令牌数量减少了 2×2 = 4 的倍数**（2 次分辨率下采样）
+- 输出**尺寸**设置为**2 *C**，*分辨率保持为***H* /8× *W* /8**。补丁合并和特征转换的第一个块被表示为**“阶段 2”**。
+- 在每个 MSA 模块和每个 MLP 之前应用 LayerNorm (LN) 层，并在**每个[模块](https://sh-tsang.medium.com/review-layer-normalization-ln-6c2ae88bae47)**之后应用**残差连接。**
+
+## ****Shifted Window Based Self-Attention****
+
+### ****Window Based Self-Attention (W-MSA)****
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f3e18bd5-e2f1-4629-b637-ae7fa3ad4ab2/3f0b06b0-513c-4de2-b388-f7e2f8642e5b/Untitled.png)
+
+假设每个窗口包含***M* × *M 个*patch**，全局 MSA 模块和基于***h* × *w*个patch图像**的窗口的计算复杂度为：
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f3e18bd5-e2f1-4629-b637-ae7fa3ad4ab2/7ec378fa-a36f-44e3-809f-a1efc460ef6f/Untitled.png)
+
+其中前者与补丁号*hw*成二次方，后者**在*M*固定（默认设置为 7）**时呈线性。
+
+### ****Window Based Self-Attention (W-MSA)****
+
+- 基于窗口的自注意力模块**缺乏跨窗口的连接**，这限制了它的建模能力。
+- 提出了一种移位窗口分区方法，该方法**在连续 Swin Transformer 块中的两个分区配置之间交替**。
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f3e18bd5-e2f1-4629-b637-ae7fa3ad4ab2/956e0376-aff5-4f8e-964c-67284a7ecef5/Untitled.png)
+
+• 其中*zl* -1 是前一层的输出特征。
+
+ 在计算相似性时，每个头都包含**相对位置偏差*B。***
 
 [图解Swin Transformer - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/367111046)
