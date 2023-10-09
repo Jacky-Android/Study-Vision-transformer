@@ -16,7 +16,9 @@ Transformer里面的Q，K，V是指查询（Query），键（Key）和值（Valu
 
 自注意力是指Q，K，V都来自于同一个输入，用于计算输入的每个元素与自身的相关性，从而捕捉输入的内部结构。编码器-解码器注意力是指Q来自于解码器的输出，K，V来自于编码器的输出，用于计算解码器的输出与编码器的输出的相关性，从而捕捉输入和输出之间的对应关系。
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled.png)
+
+
+![Untitled](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/6d4f831c-073b-4d74-aa79-29b78f478b0e)
 
 ## QKV Attention
 
@@ -27,10 +29,7 @@ Transformer里面的Q，K，V是指查询（Query），键（Key）和值（Valu
 
 QKV attention 计算公式可以用数学公式表示为：
 
-$$
-Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V
-
-$$
+$$Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$
 
 其中，dk是K的维度，QKT表示Q和K的转置的点积，softmax函数将注意力的对数值归一化，使得它们的和为1。
 
@@ -39,8 +38,9 @@ $$
 实现一些经典的vit attention ，也算是笔记。😁😁😁
 
 # Vision transformer
+![Untitled 1](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/bd8994c9-f6a8-4e97-8a96-3ded0d3551cf)
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%201.png)
+
 
 1) patch embedding：例如输入图片大小为224x224，将图片分为固定大小的patch，patch大小为16x16，则每张图像会生成224x224/16x16=196个patch，即输入序列长度为**196**，每个patch维度16x16x3=**768**，线性投射层的维度为768xN (N=768)，因此输入通过线性投射层之后的维度依然为196x768，即一共有196个token，每个token的维度是768。这里还需要加上一个特殊字符cls，因此最终的维度是**197x768**。到目前为止，已经通过patch embedding将一个视觉问题转化为了一个seq2seq问题
 
@@ -100,7 +100,8 @@ class Attention(nn.Module):
 
 ## 框架
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%202.png)
+![Untitled 2](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/66578fe1-522b-49c8-8496-86af44f48e0d)
+
 
 - Swin Transformer（上图为 Swin-T，T 为 Tiny）首先通过补丁分割模块（如[ViT）](https://sh-tsang.medium.com/review-vision-transformer-vit-406568603de0)将输入 RGB 图像分割为不重叠的补丁。
 - 每个补丁都被视为一个“令牌”，其特征被设置为原始像素 RGB 值的串联。使用**4×4 的 patch 大小，因此每个 patch 的特征维度为 4×4×3=48**。线性嵌入层应用于该原始值特征，将**其投影到任意维度*C***。
@@ -112,11 +113,13 @@ class Attention(nn.Module):
 
 ### ****Window Based Self-Attention (W-MSA)****
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%203.png)
+![Untitled 3](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/a20ec92e-bcad-4e9c-bfc6-b6a5ffdeb704)
+
 
 假设每个窗口包含***M* × *M 个*patch**，全局 MSA 模块和基于***h* × *w*个patch图像**的窗口的计算复杂度为：
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%204.png)
+
+![Untitled 4](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/b0b65b30-914b-4108-9a03-6218f3ac766d)
 
 其中前者与补丁号*hw*成二次方，后者**在*M*固定（默认设置为 7）**时呈线性。
 
@@ -125,13 +128,15 @@ class Attention(nn.Module):
 - 基于窗口的自注意力模块**缺乏跨窗口的连接**，这限制了它的建模能力。
 - 提出了一种移位窗口分区方法，该方法**在连续 Swin Transformer 块中的两个分区配置之间交替**。
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%205.png)
+![Untitled 5](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/813513b2-75e5-476f-8877-ec33899715e6)
+
 
 • 其中*zl* -1 是前一层的输出特征。
 
  在计算相似性时，每个头都包含**相对位置偏差*B。***
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%206.png)
+![Untitled 6](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/5a7910ec-5678-4948-a74c-6476788f7308)
+
 
 ## 细节
 
@@ -172,9 +177,9 @@ def img2windows(img, H_sp, W_sp):
     - 然后，如果提供了mask，则将attn重塑为(B_ // nW, nW, self.num_heads, N, N)的形状，并在第一维和第二维上增加一个维度，与mask相加得到屏蔽了一些位置的注意力得分张量attn。然后将其重塑为(-1, self.num_heads, N, N)的形状。如果没有提供mask，则直接将attn通过self.softmax函数得到注意力权重张量attn，并对其进行self.attn_drop操作。
     - 最后，将attn与v进行矩阵乘法得到输出特征x，并将其在第一维和第二维上进行交换，并重塑为(B_, N, C)的形状。然后通过self.proj(x)得到最终的输出特征x，并对其进行self.proj_drop操作。返回x作为模块的输出。
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%207.png)
+![Untitled 7](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/4b714b78-f898-4fdb-863f-a6afb7fdf04c)
 
-![Untitled](transformer%E7%A0%94%E4%B9%A0%20402fabb8d72a44e8a65f5977ac393f14/Untitled%208.png)
+![Untitled 8](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/c86eb124-9d94-464b-9976-274c93550ddd)
 
 ```python
 class WindowAttention(nn.Module):
