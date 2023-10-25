@@ -8,6 +8,8 @@
 
 [Swin Tranformer attention](https://github.com/Jacky-Android/Study-Vision-transformer/blob/main/vit_attention/swin_att.py)
 
+[Swin v2 attention](https://github.com/Jacky-Android/Study-Vision-transformer/blob/main/vit_attention/swin_v2_att.py)
+
 ## 目录
 [Q,K,V](https://github.com/Jacky-Android/Study-Vision-transformer/tree/main#qkv)
 
@@ -299,7 +301,9 @@ def windows2img(img_splits_hw, H_sp, W_sp, H, W):
 
 提出了三种主要技术：1) 结合余弦注意力的残差后规范方法，以提高训练的稳定性；2) 对数间隔连续位置偏置方法，以有效地将使用低分辨率图像预训练的模型转移到高分辨率输入的下游任务中；3) 自监督预训练方法 SimMIM，以减少对大量标记图像的需求。
 
-![为了更好地扩展模型容量和窗口分辨率，我们对原有的 Swin Transformer 架构（V1）进行了多项调整：1) 以重后规范取代之前的前规范配置；2) 以比例余弦关注取代原来的点积关注；3) 以对数间隔的连续相对位置偏置方法取代之前的参数化方法。适应性 1) 和 2) 使模型更容易扩大容量。适应性 3) 使模型能更有效地跨窗口分辨率转移。经过调整的架构被命名为 Swin Transformer V2。](https://prod-files-secure.s3.us-west-2.amazonaws.com/f3e18bd5-e2f1-4629-b637-ae7fa3ad4ab2/a8cdbe71-2f5b-4ea6-a395-265c789c4a19/Untitled.png)
+![image](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/4dd61896-fe18-4b43-89b0-fa9ca72b7f9f)
+
+为了更好地扩展模型容量和窗口分辨率，我们对原有的 Swin Transformer 架构（V1）进行了多项调整：1) 以重后规范取代之前的前规范配置；2) 以比例余弦关注取代原来的点积关注；3) 以对数间隔的连续相对位置偏置方法取代之前的参数化方法。适应性 1) 和 2) 使模型更容易扩大容量。适应性 3) 使模型能更有效地跨窗口分辨率转移。经过调整的架构被命名为 Swin Transformer V2。
 
 为了更好地扩展模型容量和窗口分辨率，我们对原有的 Swin Transformer 架构（V1）进行了多项调整：1) 以重后规范取代之前的前规范配置；2) 以比例余弦关注取代原来的点积关注；3) 以对数间隔的连续相对位置偏置方法取代之前的参数化方法。适应性 1) 和 2) 使模型更容易扩大容量。适应性 3) 使模型能更有效地跨窗口分辨率转移。经过调整的架构被命名为 Swin Transformer V2。
 
@@ -307,11 +311,8 @@ def windows2img(img_splits_hw, H_sp, W_sp, H, W):
 
 为缓解这一问题，我们建议采用残差后归一化方法，如图 [Untitled](https://www.notion.so/db9238dd07d640d2ba66d74ec5dd5b71?pvs=21) 所示。在这种方法中，每个残差块的输出在合并回主分支之前都会进行归一化处理，当层深入时，主分支的振幅不会累积。如图 [2](https://www.notion.so/transformer-402fabb8d72a44e8a65f5977ac393f14?pvs=21) 所示，这种方法的激活振幅比原来的预归一化配置要温和得多。
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f3e18bd5-e2f1-4629-b637-ae7fa3ad4ab2/bfd00ace-0712-43fd-9f71-95c35b16f066/Untitled.png)
+![image](https://github.com/Jacky-Android/Study-Vision-transformer/assets/55181594/aebb91cd-1fea-4618-a81b-a81c03ea3710)
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f3e18bd5-e2f1-4629-b637-ae7fa3ad4ab2/3fffe886-4acf-4995-aec8-f98ae1d10ec3/Untitled.png)
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f3e18bd5-e2f1-4629-b637-ae7fa3ad4ab2/ce393c7c-32e2-4f7c-8775-ea63da4e03f7/Untitled.png)
 
 ### Scaled cosine attention
 
