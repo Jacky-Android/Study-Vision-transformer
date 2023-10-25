@@ -21,6 +21,8 @@
 
 [Swin Tranformer attention](https://github.com/Jacky-Android/Study-Vision-transformer/tree/main#swin-tranformer)
 
+[Swin v2](https://github.com/Jacky-Android/Study-Vision-transformer#swin-transformer-v2)
+
 # Q,K,V
 
 Transformer里面的Q，K，V是指查询（Query），键（Key）和值（Value）三个矩阵，它们都是通过对输入进行线性变换得到的。它们的作用是实现一种注意力机制（Attention），用于计算输入的每个元素（token）之间的相关性，并根据相关性对输入进行加权和，得到一个新的输出。
